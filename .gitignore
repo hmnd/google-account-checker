@@ -1,0 +1,10 @@
+# Ignore input/output files
+*.csv
+*.log
+*.txt
+
+# Ignore Virtualenv
+venv
+
+# Ignore chromedriver
+*.exe
