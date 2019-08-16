@@ -2,9 +2,11 @@
 *.csv
 *.log
 *.txt
+!requirements.txt
 
 # Ignore Virtualenv
 venv
+.venv
 
 # Ignore chromedriver
 *.exe
