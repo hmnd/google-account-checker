@@ -31,23 +31,24 @@ req_url = "https://accounts.google.com/_/signin/sl/lookup?hl=en&_reqid=27491&rt=
 
 
 def process_household(df, cookies):
+    print(df["lookup_household_id"])
     for email_name in df.index:
-        if (
-            isinstance(df[email_name], str)
-            and "Type" not in email_name
-            and "Email" in email_name
-        ):
-            payload = {"f.req": '["' + df[email_name] + '"]'}
-            req_headers["User-Agent"] = ua.random
-            resp = requests.post(
-                req_url, headers=req_headers, data=payload, cookies=cookies
-            )
-            df[
-                "{}{} Type".format(
-                    email_name, "1" if not email_name[-1].isdigit() else ""
-                ).replace(" ", "_")
-            ] = "Google" if df[email_name] in resp.text else ""
-            sleep(3)
+        if type(df[email_name]) is str:
+            val = df[email_name].strip()
+            print(val)
+            if val and "Type" not in email_name and "Email" in email_name:
+                payload = {"f.req": '["' + df[email_name] + '"]'}
+                req_headers["User-Agent"] = ua.random
+                resp = requests.post(
+                    req_url, headers=req_headers, data=payload, cookies=cookies
+                )
+                print(df[email_name] in resp.text)
+                df[
+                    "{}{} Type".format(
+                        email_name, "1" if not email_name[-1].isdigit() else ""
+                    ).replace(" ", "_")
+                ] = ("Google" if df[email_name] in resp.text else "")
+                sleep(3)
     return df
 
 
@@ -85,9 +86,9 @@ def main():
         "https://accounts.google.com/signin/v2/identifier?flowName=GlifWebSignIn&flowEntry=ServiceLogin"
     )
     cookies = session.cookies.get_dict()
-    emails_df.progress_apply(process_household, args=(cookies,), axis=1)
+    out = emails_df.progress_apply(process_household, args=(cookies,), axis=1)
     print("Exporting results to CSV...")
-    emails_df.to_csv(file_out, sep="\t", index=False)
+    out.to_csv(file_out, sep="\t", index=False)
     print("All done! View file at {}".format(file_out))
 
 
