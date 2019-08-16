@@ -31,18 +31,15 @@ req_url = "https://accounts.google.com/_/signin/sl/lookup?hl=en&_reqid=27491&rt=
 
 
 def process_household(df, cookies):
-    print(df["lookup_household_id"])
     for email_name in df.index:
         if type(df[email_name]) is str:
             val = df[email_name].strip()
-            print(val)
             if val and "Type" not in email_name and "Email" in email_name:
                 payload = {"f.req": '["' + df[email_name] + '"]'}
                 req_headers["User-Agent"] = ua.random
                 resp = requests.post(
                     req_url, headers=req_headers, data=payload, cookies=cookies
                 )
-                print(df[email_name] in resp.text)
                 df[
                     "{}{} Type".format(
                         email_name, "1" if not email_name[-1].isdigit() else ""
