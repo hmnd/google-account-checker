@@ -10,7 +10,7 @@
 
 ## Installation
 
-1. Clone this repository by running `git clone git://github.com/humanoid/gAccountChecker.git`
+1. Clone this repository by running `git clone git://github.com/hmnd/gAccountChecker.git`
 2. Download the requirements in _requirements.txt_ by running `pip install -r requirements.txt` in the cloned directory
 
 ## Usage
