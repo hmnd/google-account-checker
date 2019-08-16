@@ -42,12 +42,11 @@ def process_household(df, cookies):
             resp = requests.post(
                 req_url, headers=req_headers, data=payload, cookies=cookies
             )
-            if df[email_name] in resp.text:
-                df[
-                    "{}{} Type".format(
-                        email_name, "1" if not email_name[-1].isdigit() else ""
-                    ).replace(" ", "_")
-                ] = "Google"
+            df[
+                "{}{} Type".format(
+                    email_name, "1" if not email_name[-1].isdigit() else ""
+                ).replace(" ", "_")
+            ] = "Google" if df[email_name] in resp.text else ""
             sleep(3)
     return df
 
