@@ -1,25 +1,36 @@
 import pandas as pd
+from webdriver_manager.chrome import ChromeDriverManager, ChromeType
 from selenium import webdriver
+from selenium.webdriver import Chrome
 from selenium.common.exceptions import NoSuchElementException
 import sys
 import os
 from tqdm import tqdm
+from time import sleep
 
 
-def process_household(df, browser):
+def process_household(df, browser: Chrome):
     for email_name in df.index:
         if (
             isinstance(df[email_name], str)
             and "Type" not in email_name
             and "Email" in email_name
         ):
-            browser.get("https://accounts.google.com/signin/recovery/lookup")
-            email = browser.find_element_by_xpath('//*[@id="identifier"]')
-            next_button = browser.find_element_by_xpath('//*[@id="next"]')
+            browser.get(
+                "https://accounts.google.com/signin/v2/identifier?hl=en&continue=https%3A%2F%2Fwww.google.com%2F&flowName=GlifWebSignIn&flowEntry=AddSession"
+            )
+            email = browser.find_element_by_xpath('//*[@id="identifierId"]')
+            next_button = browser.find_element_by_xpath(
+                '//*[@id="identifierNext"]/div/button'
+            )
             email.send_keys(df[email_name])
             next_button.click()
+            sleep(2)
             try:
-                browser.find_element_by_xpath('//*[@id="identifierError"]')
+                browser.get_screenshot_as_file("screenshot.png")
+                browser.find_element_by_xpath(
+                    '//form//div[contains(text(), "Couldn\'t find your Google Account")]'
+                )
             except NoSuchElementException:
                 df[
                     "{}{} Type".format(
@@ -60,13 +71,13 @@ def main():
     print("Launching Chrome...")
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("--headless")
-    browser = webdriver.Chrome(chrome_options=chrome_options)
-    if int(browser.capabilities["version"].split(".")[0]) >= 60:
-        print("You are running Chrome v60+. Chrome is therefore running headless.")
+    browser = webdriver.Chrome(
+        ChromeDriverManager().install(), options=chrome_options
+    )
     print("Itterating through records...")
-    emails_df.progress_apply(process_household, args=(browser,), axis=1)
+    out: pd.DataFrame = emails_df.progress_apply(process_household, args=(browser,), axis=1)
     print("Exporting results to CSV...")
-    emails_df.to_csv(file_out, sep="\t", index=False)
+    out.to_csv(file_out, sep="\t", index=False)
     print("Closing Chrome...")
     browser.quit()
     print("All done! View file at {}".format(file_out))
