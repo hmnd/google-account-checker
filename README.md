@@ -13,15 +13,29 @@
 1. Clone this repository by running `git clone git://github.com/hmnd/gAccountChecker.git`
 2. Download the requirements in _requirements.txt_ by running `pip install -r requirements.txt` in the cloned directory
 
-## Usage
+## Parameters
 
-### Input
+### [input-file]
 
 Pass a comma separated file with a "Household Id" column for identification of rows and an infinite number of columns with headers containing "Email". (Note: the names of these columns are used for the names in the outputted file).
 
+### [google-identifier]
+
+1. In a browser, open the [Google login URL](https://accounts.google.com/signin/v2/identifier?hl=en&continue=https%3A%2F%2Fwww.google.com%2F&flowName=GlifWebSignIn&flowEntry=AddSession).
+2. Input any valid Google username.
+3. Click Next.
+4. Open your browser's console (usually F12 or right-click > Inspect Element).
+5. Paste the following code to the console:
+   <!--prettier-ignore -->
+    ```javascript
+   window.botguard.bg(JSON.parse('[' + document.querySelector('[data-initial-setup-data]').dataset.initialSetupData.substr(4))[18], void 0).invoke(null, false, {})
+   ```
+
+6. Use the result as the [google identifier] when calling gAccountChecker.py.
+
 ### Execution
 
-`python gAccountChecker.py [path to file that is being processed]`
+`python gAccountChecker.py [input-file] [google-identifier]`
 
 ### Output
 

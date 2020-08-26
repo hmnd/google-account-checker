@@ -13,3 +13,6 @@ venv
 
 # Ignore vscode configs
 settings.json
+
+# Ignore Python interpreter generated code
+__pycache__
