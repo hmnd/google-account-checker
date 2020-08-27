@@ -1,4 +1,4 @@
-# gAccountChecker
+# Google Account Checker
 
 > Automated method to test whether a list of emails has associated Google accounts.
 
