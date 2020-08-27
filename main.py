@@ -31,13 +31,13 @@ def process_household(df, checker: GoogleAccountChecker):
 
 def main(
     input_file: Path = typer.Option(
-        None, help="PCR export of email addresses", file_okay=True, dir_okay=False
+        ..., help="PCR export of email addresses", file_okay=True, dir_okay=False
     ),
     cookies_path: Path = typer.Option(
-        None, help="Path to cookies.txt", file_okay=True, dir_okay=False
+        ..., help="Path to cookies.txt", file_okay=True, dir_okay=False
     ),
     google_doc: str = typer.Option(
-        None, help="URL or ID of any Google Doc in your account"
+        ..., help="URL or ID of any Google Doc in your account"
     ),
     out_format: FileFormat = typer.Option(
         FileFormat.txt, help="Format of output file", case_sensitive=False
