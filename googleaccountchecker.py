@@ -23,7 +23,7 @@ class GoogleAccountChecker:
         for cookie in self.__cookies:
             self.__session.cookies.set_cookie(cookie)
 
-    def __generate_sapisid(self):
+    def __generate_sapisid(self) -> str:
         sapisid = next(
             cookie for cookie in self.__cookies if cookie.name == "SAPISID"
         ).value

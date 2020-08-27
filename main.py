@@ -14,7 +14,7 @@ class FileFormat(str, Enum):
     csv = "csv"
 
 
-def process_household(df, checker: GoogleAccountChecker):
+def process_household(df: pd.DataFrame, checker: GoogleAccountChecker) -> pd.DataFrame:
     for email_name in df.index:
         if type(df[email_name]) is str:
             val = df[email_name].strip()
