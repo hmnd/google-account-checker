@@ -43,7 +43,7 @@ Create or open any Google Doc (contents do not matter). Note down its URL for la
 ### Parameters
 
 - `--input-file`: [Correctly formatted](#input-file) CSV file of email addresses
-- `--cookies-path`: Path to [cookies.txt](#cookies.txt)
+- `--cookies-path`: Path to [cookies.txt](#cookiestxt)
 - `--google-doc`: URL or ID of [your Google Doc](#google-doc)
 - `--out-format` (optional): Format of output file (TXT or CSV)
 
